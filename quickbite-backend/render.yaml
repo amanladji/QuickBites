@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: quickbite-backend
+    env: java
+    plan: free
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/quickbite-backend-1.0.0.jar
+    healthCheckPath: /api/offers
+    envVars:
+      - key: MONGO_URI
+        sync: false          # Set this in Render dashboard — MongoDB Atlas URI
+      - key: JWT_SECRET
+        generateValue: true  # Render auto-generates a secure random secret
+      - key: FRONTEND_URL
+        sync: false          # Set to your Render static site URL after deploy
+      - key: PORT
+        value: 8080

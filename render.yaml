@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: quickbite-backend
+    env: java
+    plan: free
+    rootDir: quickbite-backend
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/quickbite-backend-1.0.0.jar
+    healthCheckPath: /api/offers
+    envVars:
+      - key: MONGO_URI
+        value: mongodb+srv://amanahmed:YVxT8mXUbgCa53P8@cluster0.03dvrm7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://quickbite-frontend.onrender.com
+      - key: PORT
+        value: 8080
+
+  - type: web
+    name: quickbite-frontend
+    env: static
+    plan: free
+    rootDir: quickbite-frontend
+    staticPublishPath: .
+    buildCommand: echo "Static — no build needed"
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
